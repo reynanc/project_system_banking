@@ -17,7 +17,7 @@ Criar um sistema bancário simples em linha de comando (CLI), com foco em:
 ---
 
 ## 🏗️ Arquitetura do Projeto
-
+```
 project_system_banking/
 │
 ├── conta_bancaria/
@@ -30,7 +30,7 @@ project_system_banking/
 │
 └── tests/
 └── test_contas.py
-
+```
 ---
 
 ## 🧩 Estrutura de Classes
