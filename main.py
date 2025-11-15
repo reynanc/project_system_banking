@@ -1,11 +1,11 @@
-# ... existing code ...
-from conta_corrente import ContaCorrente
-from conta_poupanca import ContaPoupanca
+from conta_bancaria.conta_corrente import ContaCorrente
+from conta_bancaria.conta_poupanca import ContaPoupanca
 from exceptions import SaldoInsuficienteError, ContaInexistenteError, ValorInvalidoError
 
-# Registro simples de contas em memória
-CONTAS = {}  # chave: numero (str) -> valor: instancia de conta
+# Registro de contas na memória
+CONTAS = {}  # Chave: numero (str) -> valor: instancia de conta
 
+# Função genérica para entrada de texto não vazio
 def prompt_str(msg):
     valor = input(msg).strip()
     while not valor:
@@ -13,6 +13,7 @@ def prompt_str(msg):
         valor = input(msg).strip()
     return valor
 
+# Função para ler números float com validação opcional de positividade
 def prompt_float(msg, positivo=False):
     while True:
         try:
@@ -24,6 +25,7 @@ def prompt_float(msg, positivo=False):
         except ValueError:
             print("Valor inválido. Digite um número.")
 
+# Função específica para entrada de número de conta não vazio
 def prompt_numero_conta(msg):
     numero = input(msg).strip()
     while not numero:
@@ -31,6 +33,7 @@ def prompt_numero_conta(msg):
         numero = input(msg).strip()
     return numero
 
+# Lista todas as contas registradas no sistema
 def listar_contas():
     if not CONTAS:
         print("Nenhuma conta cadastrada.")
@@ -45,6 +48,7 @@ def listar_contas():
         print(f"- {tipo} #{numero} | cliente: {conta.cliente} | agência: {conta.agencia} | saldo: R${saldo:.2f}{info_extra}")
     print()
 
+# Cria uma nova conta corrente com dados fornecidos pelo usuário
 def criar_conta_corrente():
     print("\nCriar Conta Corrente")
     cliente = prompt_str("Nome do cliente: ")
@@ -59,6 +63,7 @@ def criar_conta_corrente():
     CONTAS[numero] = conta
     print(f"ContaCorrente criada com sucesso. Número: {numero}\n")
 
+# Cria uma nova conta poupança
 def criar_conta_poupanca():
     print("\nCriar Conta Poupança")
     cliente = prompt_str("Nome do cliente: ")
@@ -72,12 +77,14 @@ def criar_conta_poupanca():
     CONTAS[numero] = conta
     print(f"ContaPoupanca criada com sucesso. Número: {numero}\n")
 
+# Busca uma conta pelo número e valida existência
 def obter_conta(numero):
     conta = CONTAS.get(numero)
     if not conta:
         raise ContaInexistenteError("Conta inexistente.")
     return conta
 
+# Realiza depósito em uma conta solicitada ao usuário
 def depositar():
     print("\nDepósito")
     numero = prompt_numero_conta("Número da conta: ")
@@ -90,6 +97,7 @@ def depositar():
     except ValorInvalidoError as e:
         print(f"Erro: {e}")
 
+# Realiza saque de uma conta solicitada ao usuário
 def sacar():
     print("\nSaque")
     numero = prompt_numero_conta("Número da conta: ")
@@ -104,6 +112,7 @@ def sacar():
     except SaldoInsuficienteError as e:
         print(f"Erro: {e}")
 
+# Realiza transferência entre duas contas existentes
 def transferir():
     print("\nTransferência")
     numero_origem = prompt_numero_conta("Número da conta origem: ")
@@ -120,6 +129,7 @@ def transferir():
     except SaldoInsuficienteError as e:
         print(f"Erro: {e}")
 
+# Mostra o saldo atual de uma conta
 def verificar_saldo():
     print("\nVerificar Saldo")
     numero = prompt_numero_conta("Número da conta: ")
@@ -129,6 +139,7 @@ def verificar_saldo():
     except ContaInexistenteError as e:
         print(f"Erro: {e}")
 
+# Permite ajustar o limite da conta corrente
 def ajustar_limite():
     print("\nAjustar Limite (Conta Corrente)")
     numero = prompt_numero_conta("Número da conta: ")
@@ -145,6 +156,7 @@ def ajustar_limite():
     except ValorInvalidoError as e:
         print(f"Erro: {e}")
 
+# Menu principal
 def menu():
     opcoes = {
         "1": ("Criar Conta Corrente", criar_conta_corrente),
